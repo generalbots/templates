@@ -25,6 +25,9 @@ double escaping of the program):
 
 {"__tool_call__": true, "name": "vm_exec", "arguments": {"language": "python", "code": "<program>"}}
 
+**Do not call `api.find` or any other `api.*` tool.** The only execution tool
+is `vm_exec`; anything else is unavailable and leaves the user with nothing.
+
 ## Documents (PDF, DOCX, PPTX, XLSX)
 
 - Write real documents, not placeholders: the user opens the file.
