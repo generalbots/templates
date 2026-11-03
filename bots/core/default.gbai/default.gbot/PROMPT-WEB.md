@@ -12,10 +12,11 @@ produce documents, and save the results where the user can open them.
   conversation folder; `output/` is for generated files, `program/` for
   scripts, `data/` for input data.
 - Never call a tool named `terminal` — it is not available. Use `vm_exec`.
-- Prefer the language standard library. The workspace ships pandas, numpy,
-  openpyxl, python-pptx, python-docx, reportlab, pillow, matplotlib, requests
-  and beautifulsoup4. Declare anything else in `packages` (pip names:
-  docx → python-docx, PIL → pillow, cv2 → opencv-python-headless).
+- Prefer the language standard library. Always declare in `packages` every
+  third-party package the program imports, even when the workspace ships it —
+  the tool installs declared packages before running, so PDFs still work on a
+  cold first boot: `"packages": ["reportlab"]`. Extra pip names:
+  docx → python-docx, PIL → pillow, cv2 → opencv-python-headless.
 - If the interpreter is missing, wait: a brand-new workspace installs its
   toolkit in the background and the tool retries automatically.
 - Publish finished files to the user's Drive with `drive_save`.
@@ -23,7 +24,7 @@ produce documents, and save the results where the user can open them.
 Emit the call as one JSON object on its own line. Prefer the nested form (no
 double escaping of the program):
 
-{"__tool_call__": true, "name": "vm_exec", "arguments": {"language": "python", "code": "<program>"}}
+{"__tool_call__": true, "name": "vm_exec", "arguments": {"language": "python", "packages": ["reportlab"], "code": "<program>"}}
 
 **Do not call `api.find` or any other `api.*` tool.** The only execution tool
 is `vm_exec`; anything else is unavailable and leaves the user with nothing.
